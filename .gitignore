@@ -300,3 +300,18 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+UnityProject/Temp
+UnityProject/Library
+UnityProject/Assets/ThirdParty/ML-Agents/Plugins/Computer/libtensorflow.bundle
+
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+

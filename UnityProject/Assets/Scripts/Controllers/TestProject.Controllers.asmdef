@@ -1,0 +1,11 @@
+{
+    "name": "TestProject.Controllers",
+    "references": [
+        "Controllers.Core",
+        "TestProject-Model"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

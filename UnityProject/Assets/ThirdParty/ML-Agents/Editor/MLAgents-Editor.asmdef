@@ -1,0 +1,14 @@
+{
+    "name": "MLAgents-Editor",
+    "references": [
+        "MLAgents"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

@@ -1,0 +1,13 @@
+{
+    "name": "TestProject",
+    "references": [
+        "MLAgents",
+        "Zenject",
+        "TestProject.Controllers",
+        "Controllers.Core"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

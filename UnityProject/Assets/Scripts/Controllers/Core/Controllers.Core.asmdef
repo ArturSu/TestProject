@@ -1,0 +1,10 @@
+{
+    "name": "Controllers.Core",
+    "references": [
+        "Zenject"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}

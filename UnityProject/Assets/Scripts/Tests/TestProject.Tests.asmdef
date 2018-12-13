@@ -1,0 +1,16 @@
+{
+    "name": "TestProject.Tests",
+    "references": [
+        "Controllers.Core",
+        "TestProject.Controllers",
+        "TestProject-Model"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
