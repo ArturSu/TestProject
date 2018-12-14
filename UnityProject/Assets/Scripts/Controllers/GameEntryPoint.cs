@@ -20,7 +20,7 @@ namespace TestProject.Controllers
         {
             if (!_isGameInitialized)
             {
-                var rootController = _controllerFactory.Create<TestController>();
+                var rootController = _controllerFactory.Create<RootController>();
                 rootController.Start();
                 _isGameInitialized = true;
             }

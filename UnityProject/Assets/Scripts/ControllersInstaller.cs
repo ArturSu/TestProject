@@ -9,8 +9,7 @@ namespace TestProject
     {
         public override void InstallBindings()
         {
-            Container.Bind<TestController>().AsTransient();
-            Container.Bind<TestControllerB>().AsTransient();
+            Container.Bind<RootController>().AsTransient();
             Container.Bind<BattleFlowController>().AsTransient();
             Container.Bind<AttackController>().AsTransient();
             Container.Bind<MoveController>().AsTransient();
