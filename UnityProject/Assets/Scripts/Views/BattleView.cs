@@ -7,12 +7,13 @@ using UnityEngine;
 
 namespace TestProject.Views
 {
-    public class BattleView : MonoBehaviour, IBattleView, IMoveInput
+    public class BattleView : MonoBehaviour, IBattleView, IMoveInput, IAttackInput
     {
         private readonly List<TileView> _tileViews = new List<TileView>();
         private readonly List<SoldierView> _soldierViews = new List<SoldierView>();
 
         public event Action<Tuple<int, int>> TileSelected;
+        public event Action<int> TargetSelected;
 
         [SerializeField] private TileView _tilePrefab;
         [SerializeField] private SoldierView _soldierPrefab;
@@ -45,7 +46,24 @@ namespace TestProject.Views
             }
         }
 
-        public void Deactivate()
+        public void Activate(int[] targetIds)
+        {
+            foreach (var targetId in targetIds)
+            {
+                var soldierView = _soldierViews.First(item => item.Id == targetId);
+                soldierView.SetAttackState();
+            }
+        }
+
+        void IAttackInput.Deactivate()
+        {
+            foreach (var soldierView in _soldierViews)
+            {
+                soldierView.SetDefaultState();
+            }
+        }
+
+        void IMoveInput.Deactivate()
         {
             foreach (var tileView in _tileViews)
             {
@@ -79,6 +97,7 @@ namespace TestProject.Views
                 var position = GetWorldPosition(soldier.PositionX, soldier.PositionY);
                 var soldierView = Instantiate(_soldierPrefab, transform);
                 soldierView.Initialize(soldier.Id, soldier.ArmyType, position);
+                soldierView.SoldierClicked +=SoldierView_SoldierClicked;
                 _soldierViews.Add(soldierView);
             }
         }
@@ -107,9 +126,10 @@ namespace TestProject.Views
 
         private void ClearSoldiers()
         {
-            foreach (var soldier in _soldierViews)
+            foreach (var soldierView in _soldierViews)
             {
-                Destroy(soldier.gameObject);
+                soldierView.SoldierClicked -=SoldierView_SoldierClicked;
+                Destroy(soldierView.gameObject);
             }
 
             _soldierViews.Clear();
@@ -119,10 +139,20 @@ namespace TestProject.Views
         {
             TileSelected?.Invoke(tile);
         }
+        
+        private void OnTargetSelected(int id)
+        {
+            TargetSelected?.Invoke(id);
+        }
 
         private void TileView_TileClicked(int x, int y)
         {
             OnTileSelected(new Tuple<int, int>(x, y));
+        }
+        
+        private void SoldierView_SoldierClicked(int id)
+        {
+            OnTargetSelected(id);
         }
     }
 }

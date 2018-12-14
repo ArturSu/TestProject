@@ -43,11 +43,11 @@ namespace TestProject.Controllers
                     var moveRes = await CreateAndStart<MoveController>(soldier).GetProcessedTask();
                     RemoveController(moveRes.Controller);
 
-//                    if (IsControllerAlive)
-//                    {
-//                        var attackRes = await CreateAndStart<AttackController>(soldier).GetProcessedTask();
-//                        RemoveController(attackRes.Controller);
-//                    }
+                  //  if (IsControllerAlive)
+                    {
+                        var attackRes = await CreateAndStart<AttackController>(soldier).GetProcessedTask();
+                        RemoveController(attackRes.Controller);
+                    }
                 }
             }
             catch (TaskCanceledException)

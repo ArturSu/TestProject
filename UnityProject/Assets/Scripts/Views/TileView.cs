@@ -33,12 +33,6 @@ namespace TestProject.Views
             _meshRenderer.material.color = Color.green;
             _collider.enabled = true;
         }
-        
-        public void SetAttackState()
-        {
-            _meshRenderer.material.color = Color.red;
-            _collider.enabled = true;
-        }
 
         public void OnPointerClick(PointerEventData eventData)
         {
