@@ -14,7 +14,7 @@ namespace TestProject.Controllers
 
         private int _currentSoldierIndex;
         
-        private bool IsBattleInProgress => IsControllerAlive && _battleData.Soldiers.Any(item => item.IsAlive);
+        private bool IsBattleInProgress => _battleData.Soldiers.Any(item => item.IsAlive);
 
         public BattleFlowController(IBattleView battleView, BattleData battleData, ControllerFactory controllerFactory)
             : base(controllerFactory)
@@ -43,11 +43,11 @@ namespace TestProject.Controllers
                     var moveRes = await CreateAndStart<MoveController>(soldier).GetProcessedTask();
                     RemoveController(moveRes.Controller);
 
-                    if (IsControllerAlive)
-                    {
-                        var attackRes = await CreateAndStart<AttackController>(soldier).GetProcessedTask();
-                        RemoveController(attackRes.Controller);
-                    }
+//                    if (IsControllerAlive)
+//                    {
+//                        var attackRes = await CreateAndStart<AttackController>(soldier).GetProcessedTask();
+//                        RemoveController(attackRes.Controller);
+//                    }
                 }
             }
             catch (TaskCanceledException)

@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4438178816790402}
   - component: {fileID: 114130604983408786}
   - component: {fileID: 114262488941148250}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BattleMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4037823038049686}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FirstTileAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

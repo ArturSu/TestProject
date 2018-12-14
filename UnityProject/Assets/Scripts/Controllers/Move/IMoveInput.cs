@@ -4,8 +4,8 @@ namespace TestProject.Controllers
 {
     public interface IMoveInput
     {
-        event Action<MoveDirection> DirectionSelected; 
-        void Activate(MoveDirection[] directions);
+        event Action<Tuple<int, int>> TileSelected; 
+        void Activate(Tuple<int, int>[] tiles);
         void Deactivate();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TestProject.Controllers;
 using TestProject.Model;
@@ -6,10 +7,12 @@ using UnityEngine;
 
 namespace TestProject.Views
 {
-    public class BattleView : MonoBehaviour, IBattleView
+    public class BattleView : MonoBehaviour, IBattleView, IMoveInput
     {
         private readonly List<TileView> _tileViews = new List<TileView>();
         private readonly List<SoldierView> _soldierViews = new List<SoldierView>();
+
+        public event Action<Tuple<int, int>> TileSelected;
 
         [SerializeField] private TileView _tilePrefab;
         [SerializeField] private SoldierView _soldierPrefab;
@@ -31,8 +34,25 @@ namespace TestProject.Views
         {
             var soldier = GetSoldierView(id);
             soldier.Kill();
-        }  
+        }
 
+        public void Activate(Tuple<int, int>[] tiles)
+        {
+            foreach (var tile in tiles)
+            {
+                var tileView = _tileViews.First(item => item.X == tile.Item1 && item.Y == tile.Item2);
+                tileView.SetMoveState();
+            }
+        }
+
+        public void Deactivate()
+        {
+            foreach (var tileView in _tileViews)
+            {
+                tileView.SetDefaultState();
+            }
+        }
+        
         private void CreateGrid(int height, int width)
         {
             ClearGrid();
@@ -44,6 +64,7 @@ namespace TestProject.Views
                     var position = _firstTileAnchor.position + new Vector3(-j, 0, i);
                     var tileView = Instantiate(_tilePrefab, position, _firstTileAnchor.rotation, transform);
                     tileView.Initialize(i + 1, j + 1);
+                    tileView.TileClicked += TileView_TileClicked;
                     _tileViews.Add(tileView);
                 }
             }
@@ -72,12 +93,13 @@ namespace TestProject.Views
         {
             return _soldierViews.First(item => item.Id == id);
         }
-        
+
         private void ClearGrid()
         {
-            foreach (var tile in _tileViews)
+            foreach (var tileView in _tileViews)
             {
-                Destroy(tile.gameObject);
+                tileView.TileClicked -= TileView_TileClicked;
+                Destroy(tileView.gameObject);
             }
 
             _tileViews.Clear();
@@ -91,6 +113,16 @@ namespace TestProject.Views
             }
 
             _soldierViews.Clear();
+        }
+        
+        private void OnTileSelected(Tuple<int, int> tile)
+        {
+            TileSelected?.Invoke(tile);
+        }
+
+        private void TileView_TileClicked(int x, int y)
+        {
+            OnTileSelected(new Tuple<int, int>(x, y));
         }
     }
 }

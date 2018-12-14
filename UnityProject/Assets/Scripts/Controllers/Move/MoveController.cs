@@ -4,6 +4,7 @@ using System.Linq;
 using Controllers.Core;
 using TestProject.Model;
 using UnityEngine.Assertions;
+using Coordinates = System.Tuple<int, int>;
 
 namespace TestProject.Controllers
 {
@@ -48,17 +49,17 @@ namespace TestProject.Controllers
 
         protected override void AddEventHandlers()
         {
-            _moveInput.DirectionSelected += MoveInput_DirectionSelected;
+            _moveInput.TileSelected += MoveInput_TileSelected;
         }
 
         protected override void RemoveEventHandlers()
         {
-            _moveInput.DirectionSelected -= MoveInput_DirectionSelected;
+            _moveInput.TileSelected -= MoveInput_TileSelected;
         }
 
-        private MoveDirection[] GetAvailableDirections()
+        private Coordinates[] GetAvailableDirections()
         {
-            var list = new List<MoveDirection>();
+            var list = new List<Coordinates>();
 
             var directions = Enum.GetValues(typeof(MoveDirection));
             
@@ -69,7 +70,7 @@ namespace TestProject.Controllers
                 var positionY = _currentSoldier.PositionY + delta.Item2;
                 if (IsEmptyAndValidPosition(positionX, positionY))
                 {
-                    list.Add(direction);
+                    list.Add(new Coordinates(positionX, positionY));
                 }
             }
 
@@ -90,11 +91,10 @@ namespace TestProject.Controllers
             return false;
         }
 
-        private void ProcessMove(MoveDirection moveDirection)
+        private void ProcessMove(Coordinates tile)
         {            
-            var delta = GetDeltaByDirection(moveDirection);
-            _currentSoldier.PositionX += delta.Item1;
-            _currentSoldier.PositionY += delta.Item2;
+            _currentSoldier.PositionX = tile.Item1;
+            _currentSoldier.PositionY = tile.Item2;
 
             _battleView.Move(_currentSoldier.Id, _currentSoldier.PositionX, _currentSoldier.PositionY);
 
@@ -125,9 +125,9 @@ namespace TestProject.Controllers
             return delta;
         }
 
-        private void MoveInput_DirectionSelected(MoveDirection moveDirection)
+        private void MoveInput_TileSelected(Coordinates tile)
         {
-            ProcessMove(moveDirection);
+            ProcessMove(tile);
         }
     }
 }

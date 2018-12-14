@@ -15,7 +15,7 @@ namespace TestProject.Controllers
         protected override void OnStart()
         {
             FillBattleData();
-        //    CreateAndStart<BattleFlowController>();
+            CreateAndStart<BattleFlowController>();
         }
 
         private void FillBattleData()

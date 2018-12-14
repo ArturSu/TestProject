@@ -3,6 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using TestProject.Controllers;
 using TestProject.Model;
+using Coordinates = System.Tuple<int, int>;
 
 namespace Tests
 {
@@ -16,7 +17,7 @@ namespace Tests
             var battleData = new BattleData
                 {AttackDistance = 5, GridHeight = 5, GridWidth = 10, Soldiers = new[] {playerSoldier}};
 
-            var mockMoveInput = new MoveInputMock(new[] {MoveDirection.Up, MoveDirection.Right});
+            var mockMoveInput = new MoveInputMock(new[] {new Coordinates(1, 2), new Coordinates(2, 1)});
             var controller = new MoveController(mockMoveInput, new BattleViewStub(), battleData, null);
             controller.Initialize(playerSoldier);
             controller.Start();
@@ -30,7 +31,7 @@ namespace Tests
             var battleData = new BattleData
                 {AttackDistance = 5, GridHeight = 5, GridWidth = 10, Soldiers = new[] {playerSoldier}};
 
-            var mockMoveInput = new MoveInputMock(new[] {MoveDirection.Down, MoveDirection.Right});
+            var mockMoveInput = new MoveInputMock(new[] {new Coordinates(1, 4), new Coordinates(2, 5)});
             var controller = new MoveController(mockMoveInput, new BattleViewStub(), battleData, null);
             controller.Initialize(playerSoldier);
             controller.Start();
@@ -44,7 +45,8 @@ namespace Tests
             var battleData = new BattleData
                 {AttackDistance = 5, GridHeight = 5, GridWidth = 10, Soldiers = new[] {playerSoldier}};
 
-            var mockMoveInput = new MoveInputMock(new[] {MoveDirection.Down, MoveDirection.Left});
+         
+            var mockMoveInput = new MoveInputMock(new[] {new Coordinates(10, 4), new Coordinates(9, 5)});
             var controller = new MoveController(mockMoveInput, new BattleViewStub(), battleData, null);
             controller.Initialize(playerSoldier);
             controller.Start();
@@ -57,8 +59,8 @@ namespace Tests
                 {ArmyType = ArmyType.Player, Id = 1, IsAlive = true, PositionX = 10, PositionY = 1};
             var battleData = new BattleData
                 {AttackDistance = 5, GridHeight = 5, GridWidth = 10, Soldiers = new[] {playerSoldier}};
-
-            var mockMoveInput = new MoveInputMock(new[] {MoveDirection.Up, MoveDirection.Left});
+            
+            var mockMoveInput = new MoveInputMock(new[] {new Coordinates(10, 2), new Coordinates(9, 1)});
             var controller = new MoveController(mockMoveInput, new BattleViewStub(), battleData, null);
             controller.Initialize(playerSoldier);
             controller.Start();
@@ -71,8 +73,8 @@ namespace Tests
                 {ArmyType = ArmyType.Player, Id = 1, IsAlive = true, PositionX = 5, PositionY = 2};
             var battleData = new BattleData
                 {AttackDistance = 5, GridHeight = 5, GridWidth = 10, Soldiers = new[] {playerSoldier}};
-
-            var mockMoveInput = new MoveInputMock(new[] {MoveDirection.Down, MoveDirection.Left, MoveDirection.Right, MoveDirection.Up});
+            
+            var mockMoveInput = new MoveInputMock(new[] {new Coordinates(5, 1), new Coordinates(4, 2), new Coordinates(6, 2), new Coordinates(5, 3)});
             var controller = new MoveController(mockMoveInput, new BattleViewStub(), battleData, null);
             controller.Initialize(playerSoldier);
             controller.Start();
@@ -87,8 +89,8 @@ namespace Tests
                 {ArmyType = ArmyType.Opponent, Id = 2, IsAlive = true, PositionX = 5, PositionY = 3};
             var battleData = new BattleData
                 {AttackDistance = 5, GridHeight = 5, GridWidth = 10, Soldiers = new[] {playerSoldier, opponentSoldier}};
-
-            var mockMoveInput = new MoveInputMock(new[] {MoveDirection.Down, MoveDirection.Left, MoveDirection.Right});
+            
+            var mockMoveInput = new MoveInputMock(new[] {new Coordinates(5, 1), new Coordinates(4, 2), new Coordinates(6, 2)});
             var controller = new MoveController(mockMoveInput, new BattleViewStub(), battleData, null);
             controller.Initialize(playerSoldier);
             controller.Start();
@@ -104,7 +106,7 @@ namespace Tests
             var battleData = new BattleData
                 {AttackDistance = 5, GridHeight = 5, GridWidth = 10, Soldiers = new[] {playerSoldier, opponentSoldier}};
 
-            var mockMoveInput = new MoveInputMock(new[] {MoveDirection.Down, MoveDirection.Left, MoveDirection.Right, MoveDirection.Up});
+            var mockMoveInput = new MoveInputMock(new[] {new Coordinates(5, 1), new Coordinates(4, 2), new Coordinates(6, 2), new Coordinates(5, 3)});
             var controller = new MoveController(mockMoveInput, new BattleViewStub(), battleData, null);
             controller.Initialize(playerSoldier);
             controller.Start();
@@ -112,21 +114,21 @@ namespace Tests
 
         private class MoveInputMock : IMoveInput
         {
-            private readonly MoveDirection[] _expectedDirections;
-            
-            public event Action<MoveDirection> DirectionSelected;
+            private readonly Coordinates[] _expectedTiles;
 
-            public MoveInputMock(MoveDirection[] expectedDirections)
-            {
-                _expectedDirections = expectedDirections;
-            }
+            public event Action<Coordinates> TileSelected;
             
-            public void Activate(MoveDirection[] directions)
+            public MoveInputMock(Coordinates[] expectedTiles)
             {
-                Assert.IsTrue(directions.Length == _expectedDirections.Length);
-                foreach (var direction in directions)
+                _expectedTiles = expectedTiles;
+            }
+
+            public void Activate(Coordinates[] tiles)
+            {
+                Assert.IsTrue(tiles.Length == _expectedTiles.Length);
+                foreach (var tile in tiles)
                 {
-                    Assert.IsTrue(_expectedDirections.Contains(direction));
+                    Assert.IsTrue(_expectedTiles.Any(item => item.Item1 == tile.Item1 && item.Item2 == tile.Item2));
                 }
             }
 
