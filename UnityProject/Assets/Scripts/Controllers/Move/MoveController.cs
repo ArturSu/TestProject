@@ -91,13 +91,13 @@ namespace TestProject.Controllers
         }
 
         private void ProcessMove(MoveDirection moveDirection)
-        {
-            _battleView.Move(_currentSoldier.Id, moveDirection);
-            
+        {            
             var delta = GetDeltaByDirection(moveDirection);
             _currentSoldier.PositionX += delta.Item1;
             _currentSoldier.PositionY += delta.Item2;
-            
+
+            _battleView.Move(_currentSoldier.Id, _currentSoldier.PositionX, _currentSoldier.PositionY);
+
             Complete(new ControllerResultBase(this));
         }
 

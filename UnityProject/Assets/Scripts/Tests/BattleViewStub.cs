@@ -1,14 +1,15 @@
 using TestProject.Controllers;
+using TestProject.Model;
 
 namespace Tests
 {
     public class BattleViewStub : IBattleView
     {
-        public void Initialize(int[] playerSoldiers, int[] opponentSoldiers)
+        public void Initialize(BattleData battleData)
         {
         }
 
-        public void Move(int id, MoveDirection direction)
+        public void Move(int id, int positionX, int positionY)
         {
         }
 

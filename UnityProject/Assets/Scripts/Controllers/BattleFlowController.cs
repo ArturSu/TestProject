@@ -26,12 +26,8 @@ namespace TestProject.Controllers
         protected override void OnStart()
         {
             base.OnStart();
-            var playerSoldiers = _battleData.Soldiers.Where(item => item.ArmyType == ArmyType.Player)
-                .Select(item => item.Id).ToArray();
-            var opponentSoldiers = _battleData.Soldiers.Where(item => item.ArmyType == ArmyType.Opponent)
-                .Select(item => item.Id).ToArray();
-
-            _battleView.Initialize(playerSoldiers, opponentSoldiers);
+            
+            _battleView.Initialize(_battleData);
 
             RunBattleCycle();
         }
