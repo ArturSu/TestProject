@@ -1,5 +1,6 @@
 using Controllers.Core;
 using TestProject.Controllers;
+using TestProject.Model;
 using Zenject;
 
 namespace TestProject
@@ -14,7 +15,7 @@ namespace TestProject
             Container.Bind<AttackController>().AsTransient();
             Container.Bind<MoveController>().AsTransient();
             Container.Bind<ControllerFactory>().AsSingle();
-            
+            Container.Bind<BattleData>().AsSingle();
         }
     }
 }

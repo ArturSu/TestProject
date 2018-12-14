@@ -4,7 +4,8 @@
         "MLAgents",
         "Zenject",
         "TestProject.Controllers",
-        "Controllers.Core"
+        "Controllers.Core",
+        "TestProject-Model"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
