@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Controllers.Core;
 using TestProject.Model;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace TestProject.Controllers
 {
@@ -13,6 +14,7 @@ namespace TestProject.Controllers
         private readonly BattleData _battleData;
 
         private int _currentSoldierIndex;
+        private bool _isPvE;
 
         private bool IsBattleInProgress => IsArmySoldierAlive(ArmyType.Player) && IsArmySoldierAlive(ArmyType.Opponent);
 
@@ -21,6 +23,12 @@ namespace TestProject.Controllers
         {
             _battleView = battleView;
             _battleData = battleData;
+        }
+
+        protected override void SetArg(object arg)
+        {
+            Assert.IsTrue(arg is bool);
+            _isPvE = (bool)arg;
         }
 
         protected override void OnStart()
@@ -39,13 +47,15 @@ namespace TestProject.Controllers
                 while (IsBattleInProgress && IsControllerAlive)
                 {
                     var soldier = GetCurrentSoldier();
-
-                    var moveRes = await CreateAndStart<MoveController>(soldier).GetProcessedTask();
+                    var inputType = GetInputType(soldier.ArmyType);
+                    var arg = new Tuple<SoldierData, InputType>(soldier, inputType);
+                    
+                    var moveRes = await CreateAndStart<MoveController>(arg).GetProcessedTask();
                     RemoveController(moveRes.Controller);
 
                     if (IsControllerAlive)
                     {
-                        var attackRes = await CreateAndStart<AttackController>(soldier).GetProcessedTask();
+                        var attackRes = await CreateAndStart<AttackController>(arg).GetProcessedTask();
                         RemoveController(attackRes.Controller);
                     }
                 }
@@ -61,6 +71,16 @@ namespace TestProject.Controllers
                 Debug.LogError($"Error during battle cycle. Ex: {e}");
                 Complete(new ControllerResultBase(this));
             }
+        }
+
+        private InputType GetInputType(ArmyType soldierArmyType)
+        {
+            if (_isPvE)
+            {
+                return soldierArmyType == ArmyType.Player ? InputType.Player : InputType.AI;
+            }
+
+            return InputType.AI;
         }
 
         private SoldierData GetCurrentSoldier()

@@ -16,10 +16,17 @@ namespace TestProject.Controllers
 
         protected override void OnStart()
         {
-            FillBattleData();
-            _aiInput.Initialize(_battleData);
-            PlayCicle();
-            CreateAndStart<BattleFlowController>();
+            if (_aiInput.IsTrainRun)
+            {
+                PlayCicle();
+            }
+            else
+            {
+                FillBattleData();
+                _aiInput.Initialize(_battleData);
+                CreateAndStart<BattleFlowController>(true);
+                _aiInput.Done();
+            }
         }
 
         private async void PlayCicle()
@@ -28,7 +35,7 @@ namespace TestProject.Controllers
             {
                 FillBattleData();
                 _aiInput.Initialize(_battleData);
-                var res = await CreateAndStart<BattleFlowController>().GetProcessedTask();
+                var res = await CreateAndStart<BattleFlowController>(false).GetProcessedTask();
                 RemoveController(res.Controller);
                 _aiInput.Done();
             }

@@ -23,6 +23,7 @@ namespace TestProject.Views
         private BattleData _battleData;
 
         public InputType InputType => InputType.AI;
+        public bool IsTrainRun => _brain.brainType == BrainType.External;
 
         public void Initialize(BattleData battleData)
         {

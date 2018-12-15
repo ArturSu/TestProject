@@ -9,23 +9,26 @@ namespace TestProject.Controllers
 {
     public class AttackController : ControllerWithResultBase<ControllerResultBase>
     {
-        private readonly IAttackInput _attackInput;
+        private readonly List<IAttackInput> _attackInputs;
         private readonly BattleData _battleData;
         private readonly IBattleView _battleView;
         private SoldierData _currentSoldier;
-
+        private IAttackInput _attackInput;
+        
         public AttackController(List<IAttackInput> attackInputs, IBattleView battleView, BattleData battleData, ControllerFactory controllerFactory) :
             base(controllerFactory)
         {
-            _attackInput = attackInputs.First(item => item.InputType == InputType.AI);
+            _attackInputs = attackInputs;
             _battleView = battleView;
             _battleData = battleData;
         }
 
         protected override void SetArg(object arg)
         {
-            Assert.IsTrue(arg is SoldierData);
-            _currentSoldier = (SoldierData) arg;
+            Assert.IsTrue(arg is Tuple<SoldierData, InputType>);
+            var tuple = (Tuple<SoldierData, InputType>) arg;
+            _currentSoldier = tuple.Item1;
+            _attackInput = _attackInputs.First(item => item.InputType == tuple.Item2);
         }
 
         protected override void OnStart()

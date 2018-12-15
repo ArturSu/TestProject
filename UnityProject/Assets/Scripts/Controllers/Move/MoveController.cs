@@ -11,22 +11,25 @@ namespace TestProject.Controllers
     public class MoveController : ControllerWithResultBase
     {
         private readonly BattleData _battleData;
-        private readonly IMoveInput _moveInput;
+        private readonly List<IMoveInput> _moveInputs;
         private readonly IBattleView _battleView;
         private SoldierData _currentSoldier;
+        private IMoveInput _moveInput;
 
         public MoveController(List<IMoveInput> moveInputs, IBattleView battleView, BattleData battleData,
             ControllerFactory controllerFactory) : base(controllerFactory)
         {
             _battleData = battleData;
-            _moveInput = moveInputs.First(item => item.InputType == InputType.AI);
+            _moveInputs = moveInputs;
             _battleView = battleView;
         }
 
         protected override void SetArg(object arg)
         {
-            Assert.IsTrue(arg is SoldierData);
-            _currentSoldier = (SoldierData) arg;
+            Assert.IsTrue(arg is Tuple<SoldierData, InputType>);
+            var tuple = (Tuple<SoldierData, InputType>) arg;
+            _currentSoldier = tuple.Item1;
+            _moveInput = _moveInputs.First(item => item.InputType == tuple.Item2);
         }
 
         protected override void OnStart()
