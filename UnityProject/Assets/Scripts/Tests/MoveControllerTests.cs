@@ -118,12 +118,14 @@ namespace Tests
 
             public event Action<Coordinates> TileSelected;
             
+            public InputType InputType => InputType.Player;
+            
             public MoveInputMock(Coordinates[] expectedTiles)
             {
                 _expectedTiles = expectedTiles;
             }
 
-            public void Activate(Coordinates[] tiles)
+            public void Activate(Tuple<int, int, MoveDirection>[] tiles, int soldierId)
             {
                 Assert.IsTrue(tiles.Length == _expectedTiles.Length);
                 foreach (var tile in tiles)

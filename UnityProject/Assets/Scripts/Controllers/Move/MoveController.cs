@@ -4,7 +4,7 @@ using System.Linq;
 using Controllers.Core;
 using TestProject.Model;
 using UnityEngine.Assertions;
-using Coordinates = System.Tuple<int, int>;
+using Coordinates = System.Tuple<int, int, TestProject.Controllers.MoveDirection>;
 
 namespace TestProject.Controllers
 {
@@ -34,7 +34,7 @@ namespace TestProject.Controllers
             base.OnStart();
             var availableDirections = GetAvailableDirections();
 
-            _moveInput.Activate(availableDirections);
+            _moveInput.Activate(availableDirections, _currentSoldier.Id);
 
             if (availableDirections.Length == 0)
             {
@@ -70,7 +70,7 @@ namespace TestProject.Controllers
                 var positionY = _currentSoldier.PositionY + delta.Item2;
                 if (IsEmptyAndValidPosition(positionX, positionY))
                 {
-                    list.Add(new Coordinates(positionX, positionY));
+                    list.Add(new Coordinates(positionX, positionY, direction));
                 }
             }
 
@@ -91,7 +91,7 @@ namespace TestProject.Controllers
             return false;
         }
 
-        private void ProcessMove(Coordinates tile)
+        private void ProcessMove(Tuple<int, int> tile)
         {            
             _currentSoldier.PositionX = tile.Item1;
             _currentSoldier.PositionY = tile.Item2;
@@ -125,7 +125,7 @@ namespace TestProject.Controllers
             return delta;
         }
 
-        private void MoveInput_TileSelected(Coordinates tile)
+        private void MoveInput_TileSelected(Tuple<int, int> tile)
         {
             ProcessMove(tile);
         }

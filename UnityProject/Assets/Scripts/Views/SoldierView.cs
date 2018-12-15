@@ -15,10 +15,13 @@ namespace TestProject.Views
         [SerializeField] private GameObject _attackHighlight;
         [SerializeField] private Collider _collider;
         
+        private Color _color;
+
         public void Initialize(int id, ArmyType armyType, Vector3 position)
         {
             Id = id;
-           _meshRenderer.material.color = armyType == ArmyType.Player ? Color.blue : Color.black;
+            _color =  armyType == ArmyType.Player ? Color.blue : Color.black;
+       
             transform.position = position;
             gameObject.SetActive(true);
             SetDefaultState();
@@ -39,11 +42,17 @@ namespace TestProject.Views
             _attackHighlight.SetActive(true);
             _collider.enabled = true;
         }
+        
+        public void SetCurrentSoldierState()
+        {
+            _meshRenderer.material.color = Color.yellow;
+        }
 
         public void SetDefaultState()
         {
             _attackHighlight.SetActive(false);
             _collider.enabled = false;
+            _meshRenderer.material.color = _color;
         }
         
         public void OnPointerClick(PointerEventData eventData)

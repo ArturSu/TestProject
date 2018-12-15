@@ -19,6 +19,8 @@ namespace TestProject.Views
         [SerializeField] private SoldierView _soldierPrefab;
         [SerializeField] private Transform _firstTileAnchor;
 
+        public InputType InputType => InputType.Player;
+
         public void Initialize(BattleData battleData)
         {
             CreateGrid(battleData.GridWidth, battleData.GridHeight);
@@ -37,13 +39,16 @@ namespace TestProject.Views
             soldier.Kill();
         }
 
-        public void Activate(Tuple<int, int>[] tiles)
+        public void Activate(Tuple<int, int, MoveDirection>[] tiles, int soldierId)
         {
             foreach (var tile in tiles)
             {
                 var tileView = _tileViews.First(item => item.X == tile.Item1 && item.Y == tile.Item2);
                 tileView.SetMoveState();
             }
+            
+            var soldier = GetSoldierView(soldierId);
+            soldier.SetCurrentSoldierState();
         }
 
         public void Activate(int[] targetIds)

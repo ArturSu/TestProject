@@ -130,6 +130,8 @@ namespace Tests
             private readonly int[] _expectedIds;
             public event Action<int> TargetSelected;
 
+            public InputType InputType => InputType.Player;
+
             public AttackInputMock(int[] expectedIds)
             {
                 _expectedIds = expectedIds;
