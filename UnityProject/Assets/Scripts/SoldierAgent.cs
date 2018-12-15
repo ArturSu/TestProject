@@ -25,12 +25,14 @@ namespace TestProject
             brain = agentBrain;
             Id = soldierId;
             gameObject.name = $"Agent_{Id}";
+            gameObject.SetActive(false);
+            gameObject.SetActive(true);
         }
 
         public void RequestAction(Tuple<int, int, MoveDirection>[] tiles)
         {
             _tiles = tiles;
-            RequestAction();
+            RequestDecision();
         }
         
         public override void CollectObservations()
@@ -69,7 +71,7 @@ namespace TestProject
                 else
                 {
                     AddReward(WrongDirectionChoiceReward);
-                    RequestAction();
+                    RequestDecision();
                 }
             }
             else
@@ -77,6 +79,10 @@ namespace TestProject
                 if (_tiles.Length == 0)
                 {
                     AddReward(RightDirectionChoiceReward);
+                }
+                else
+                {
+                    RequestDecision();
                 }
             }
         }

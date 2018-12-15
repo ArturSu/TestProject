@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TestProject.Controllers
 {
-    public class BattleFlowController : ControllerWithResultBase<ControllerResultBase>
+    public class BattleFlowController : ControllerWithResultBase
     {
         private readonly IBattleView _battleView;
         private readonly BattleData _battleData;
@@ -49,6 +49,8 @@ namespace TestProject.Controllers
                         RemoveController(attackRes.Controller);
                     }
                 }
+                
+                Complete(new ControllerResultBase(this));
             }
             catch (TaskCanceledException)
             {

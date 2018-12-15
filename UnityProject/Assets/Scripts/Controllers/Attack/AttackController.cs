@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Controllers.Core;
 using TestProject.Model;
@@ -13,10 +14,10 @@ namespace TestProject.Controllers
         private readonly IBattleView _battleView;
         private SoldierData _currentSoldier;
 
-        public AttackController(IAttackInput attackInput, IBattleView battleView, BattleData battleData, ControllerFactory controllerFactory) :
+        public AttackController(List<IAttackInput> attackInputs, IBattleView battleView, BattleData battleData, ControllerFactory controllerFactory) :
             base(controllerFactory)
         {
-            _attackInput = attackInput;
+            _attackInput = attackInputs.First(item => item.InputType == InputType.AI);
             _battleView = battleView;
             _battleData = battleData;
         }

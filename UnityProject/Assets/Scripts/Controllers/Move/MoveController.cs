@@ -15,11 +15,11 @@ namespace TestProject.Controllers
         private readonly IBattleView _battleView;
         private SoldierData _currentSoldier;
 
-        public MoveController(IMoveInput moveInput, IBattleView battleView, BattleData battleData,
+        public MoveController(List<IMoveInput> moveInputs, IBattleView battleView, BattleData battleData,
             ControllerFactory controllerFactory) : base(controllerFactory)
         {
             _battleData = battleData;
-            _moveInput = moveInput;
+            _moveInput = moveInputs.First(item => item.InputType == InputType.AI);
             _battleView = battleView;
         }
 

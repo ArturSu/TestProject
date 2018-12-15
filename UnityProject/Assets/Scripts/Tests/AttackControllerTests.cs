@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using System.Linq;
 using TestProject.Controllers;
@@ -19,7 +20,7 @@ namespace Tests
                 {AttackDistance = 5, GridHeight = 5, GridWidth = 10, Soldiers = new[] {playerSoldier, opponentSoldier}};
 
             var mockAttackInput = new AttackInputMock(new[] {2});
-            var controller = new AttackController(mockAttackInput, new BattleViewStub(), battleData, null);
+            var controller = new AttackController(new List<IAttackInput> {mockAttackInput}, new BattleViewStub(), battleData, null);
             controller.Initialize(playerSoldier);
             controller.Start();
         }
@@ -35,7 +36,7 @@ namespace Tests
                 {AttackDistance = 5, GridHeight = 5, GridWidth = 10, Soldiers = new[] {playerSoldier, opponentSoldier}};
 
             var mockAttackInput = new AttackInputMock(new int[] { });
-            var controller = new AttackController(mockAttackInput, new BattleViewStub(), battleData, null);
+            var controller = new AttackController(new List<IAttackInput> {mockAttackInput}, new BattleViewStub(), battleData, null);
             controller.Initialize(playerSoldier);
             controller.Start();
         }
@@ -51,7 +52,7 @@ namespace Tests
                 {AttackDistance = 5, GridHeight = 5, GridWidth = 10, Soldiers = new[] {playerSoldier, playerSoldier2}};
 
             var mockAttackInput = new AttackInputMock(new int[] { });
-            var controller = new AttackController(mockAttackInput, new BattleViewStub(), battleData, null);
+            var controller = new AttackController(new List<IAttackInput> {mockAttackInput}, new BattleViewStub(), battleData, null);
             controller.Initialize(playerSoldier);
             controller.Start();
         }
@@ -67,7 +68,7 @@ namespace Tests
                 {AttackDistance = 5, GridHeight = 5, GridWidth = 10, Soldiers = new[] {playerSoldier, opponentSoldier}};
 
             var mockAttackInput = new AttackInputMock(new int[] { });
-            var controller = new AttackController(mockAttackInput, new BattleViewStub(), battleData, null);
+            var controller = new AttackController(new List<IAttackInput> {mockAttackInput}, new BattleViewStub(), battleData, null);
             controller.Initialize(playerSoldier);
             controller.Start();
         }
@@ -83,7 +84,7 @@ namespace Tests
                 {AttackDistance = 5, GridHeight = 5, GridWidth = 10, Soldiers = new[] {playerSoldier, opponentSoldier}};
 
             var mockAttackInput = new AttackInputMock(new[] {2});
-            var controller = new AttackController(mockAttackInput, new BattleViewStub(), battleData, null);
+            var controller = new AttackController(new List<IAttackInput> {mockAttackInput}, new BattleViewStub(), battleData, null);
             controller.Initialize(playerSoldier);
             controller.Start();
         }
@@ -104,7 +105,7 @@ namespace Tests
             };
 
             var mockAttackInput = new AttackInputMock(new[] {2, 3});
-            var controller = new AttackController(mockAttackInput, new BattleViewStub(), battleData, null);
+            var controller = new AttackController(new List<IAttackInput> {mockAttackInput}, new BattleViewStub(), battleData, null);
             controller.Initialize(playerSoldier);
             controller.Start();
         }
@@ -120,7 +121,7 @@ namespace Tests
                 {AttackDistance = 5, GridHeight = 5, GridWidth = 10, Soldiers = new[] {playerSoldier, opponentSoldier}};
 
             var mockAttackInput = new AttackInputMock(new int[] { });
-            var controller = new AttackController(mockAttackInput, new BattleViewStub(), battleData, null);
+            var controller = new AttackController(new List<IAttackInput> {mockAttackInput}, new BattleViewStub(), battleData, null);
             controller.Initialize(playerSoldier);
             controller.Start();
         }

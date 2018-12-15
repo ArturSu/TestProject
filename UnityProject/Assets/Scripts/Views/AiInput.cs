@@ -9,7 +9,7 @@ using Zenject;
 
 namespace TestProject.Views
 {
-    public class AiInput : MonoBehaviour, IMoveInput, IAttackInput
+    public class AiInput : MonoBehaviour, IAiInput, IMoveInput, IAttackInput
     {
         private readonly List<SoldierAgent> _agents = new List<SoldierAgent>();
 
@@ -28,7 +28,7 @@ namespace TestProject.Views
         {
             _battleData = battleData;
         }
-        
+
         public void Done()
         {
             foreach (var agent in _agents)
@@ -55,7 +55,7 @@ namespace TestProject.Views
         public void Deactivate()
         {
         }
-        
+
         private SoldierAgent GetAgent(int soldierId)
         {
             var agent = _agents.FirstOrDefault(item => item.Id == soldierId);

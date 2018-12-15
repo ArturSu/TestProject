@@ -6,16 +6,32 @@ namespace TestProject.Controllers
     public class RootController : ControllerBase
     {
         private readonly BattleData _battleData;
+        private IAiInput _aiInput;
 
-        public RootController(BattleData battleData, ControllerFactory controllerFactory) : base(controllerFactory)
+        public RootController(BattleData battleData, IAiInput aiInput, ControllerFactory controllerFactory) : base(controllerFactory)
         {
             _battleData = battleData;
+            _aiInput = aiInput;
         }
 
         protected override void OnStart()
         {
             FillBattleData();
+            _aiInput.Initialize(_battleData);
+            PlayCicle();
             CreateAndStart<BattleFlowController>();
+        }
+
+        private async void PlayCicle()
+        {
+            while (IsControllerAlive)
+            {
+                FillBattleData();
+                _aiInput.Initialize(_battleData);
+                var res = await CreateAndStart<BattleFlowController>().GetProcessedTask();
+                RemoveController(res.Controller);
+                _aiInput.Done();
+            }
         }
 
         private void FillBattleData()
@@ -25,11 +41,11 @@ namespace TestProject.Controllers
             var playerSoldier2 = new SoldierData
                 {ArmyType = ArmyType.Player, Id = 3, IsAlive = true, PositionX = 1, PositionY = 4};
             var opponentSoldier1 = new SoldierData
-                {ArmyType = ArmyType.Opponent, Id = 2, IsAlive = true, PositionX = 5, PositionY = 2};
+                {ArmyType = ArmyType.Opponent, Id = 2, IsAlive = true, PositionX = 7, PositionY = 2};
             var opponentSoldier2 = new SoldierData
-                {ArmyType = ArmyType.Opponent, Id = 4, IsAlive = true, PositionX = 5, PositionY = 4};
+                {ArmyType = ArmyType.Opponent, Id = 4, IsAlive = true, PositionX = 7, PositionY = 4};
 
-            _battleData.Soldiers = new[] {playerSoldier1, opponentSoldier1, playerSoldier2, opponentSoldier2};
+            _battleData.Soldiers = new[] {playerSoldier1, opponentSoldier1};
             _battleData.GridWidth = 10;
             _battleData.GridHeight = 8;
             _battleData.AttackDistance = 5;
