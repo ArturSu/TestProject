@@ -13,8 +13,8 @@ namespace TestProject.Controllers
         private readonly BattleData _battleData;
 
         private int _currentSoldierIndex;
-        
-        private bool IsBattleInProgress => _battleData.Soldiers.Any(item => item.IsAlive);
+
+        private bool IsBattleInProgress => IsArmySoldierAlive(ArmyType.Player) && IsArmySoldierAlive(ArmyType.Opponent);
 
         public BattleFlowController(IBattleView battleView, BattleData battleData, ControllerFactory controllerFactory)
             : base(controllerFactory)
@@ -36,14 +36,14 @@ namespace TestProject.Controllers
         {
             try
             {
-                while (IsBattleInProgress)
+                while (IsBattleInProgress && IsControllerAlive)
                 {
                     var soldier = GetCurrentSoldier();
 
                     var moveRes = await CreateAndStart<MoveController>(soldier).GetProcessedTask();
                     RemoveController(moveRes.Controller);
 
-                  //  if (IsControllerAlive)
+                    if (IsControllerAlive)
                     {
                         var attackRes = await CreateAndStart<AttackController>(soldier).GetProcessedTask();
                         RemoveController(attackRes.Controller);
@@ -75,6 +75,11 @@ namespace TestProject.Controllers
             }
 
             throw new Exception("Can't find alive soldier in array.");
+        }
+
+        private bool IsArmySoldierAlive(ArmyType armyType)
+        {
+            return _battleData.Soldiers.Any(item => item.ArmyType == armyType && item.IsAlive);
         }
     }
 }

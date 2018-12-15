@@ -6,7 +6,7 @@ namespace TestProject.Views
 {
     public class TileView : MonoBehaviour, IPointerClickHandler
     {
-        public event Action<int, int> TileClicked; 
+        public event Action<int, int> Clicked; 
         
         [SerializeField] private MeshRenderer _meshRenderer;
         [SerializeField] private Collider _collider;
@@ -41,7 +41,7 @@ namespace TestProject.Views
 
         private void OnTileClicked(int x, int y)
         {
-            TileClicked?.Invoke(x, y);
+            Clicked?.Invoke(x, y);
         }
     }
 }

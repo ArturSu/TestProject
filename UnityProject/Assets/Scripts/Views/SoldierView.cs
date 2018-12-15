@@ -7,7 +7,7 @@ namespace TestProject.Views
 {
     public class SoldierView : MonoBehaviour, IPointerClickHandler
     {
-        public event Action<int> SoldierClicked;
+        public event Action<int> Clicked;
         
         public int Id { get; private set; }
 
@@ -53,7 +53,7 @@ namespace TestProject.Views
         
         private void OnSoldierClicked(int id)
         {
-            SoldierClicked?.Invoke(id);
+            Clicked?.Invoke(id);
         }
     }
 }

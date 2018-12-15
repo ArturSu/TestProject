@@ -82,7 +82,7 @@ namespace TestProject.Views
                     var position = _firstTileAnchor.position + new Vector3(-j, 0, i);
                     var tileView = Instantiate(_tilePrefab, position, _firstTileAnchor.rotation, transform);
                     tileView.Initialize(i + 1, j + 1);
-                    tileView.TileClicked += TileView_TileClicked;
+                    tileView.Clicked += TileView_Clicked;
                     _tileViews.Add(tileView);
                 }
             }
@@ -97,7 +97,7 @@ namespace TestProject.Views
                 var position = GetWorldPosition(soldier.PositionX, soldier.PositionY);
                 var soldierView = Instantiate(_soldierPrefab, transform);
                 soldierView.Initialize(soldier.Id, soldier.ArmyType, position);
-                soldierView.SoldierClicked +=SoldierView_SoldierClicked;
+                soldierView.Clicked +=SoldierView_Clicked;
                 _soldierViews.Add(soldierView);
             }
         }
@@ -117,7 +117,7 @@ namespace TestProject.Views
         {
             foreach (var tileView in _tileViews)
             {
-                tileView.TileClicked -= TileView_TileClicked;
+                tileView.Clicked -= TileView_Clicked;
                 Destroy(tileView.gameObject);
             }
 
@@ -128,7 +128,7 @@ namespace TestProject.Views
         {
             foreach (var soldierView in _soldierViews)
             {
-                soldierView.SoldierClicked -=SoldierView_SoldierClicked;
+                soldierView.Clicked -=SoldierView_Clicked;
                 Destroy(soldierView.gameObject);
             }
 
@@ -145,12 +145,12 @@ namespace TestProject.Views
             TargetSelected?.Invoke(id);
         }
 
-        private void TileView_TileClicked(int x, int y)
+        private void TileView_Clicked(int x, int y)
         {
             OnTileSelected(new Tuple<int, int>(x, y));
         }
         
-        private void SoldierView_SoldierClicked(int id)
+        private void SoldierView_Clicked(int id)
         {
             OnTargetSelected(id);
         }

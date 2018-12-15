@@ -15,7 +15,7 @@ namespace Controllers.Core
 
         protected ControllerFactory ControllerFactory { get; }
         protected string ControllerName { get; }
-        protected bool IsControllerAlive => _stopToken.IsCancellationRequested;
+        protected bool IsControllerAlive => !_stopToken.IsCancellationRequested;
 
         protected ControllerBase(ControllerFactory controllerFactory)
         {
