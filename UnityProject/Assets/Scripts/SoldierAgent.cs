@@ -4,25 +4,35 @@ using MLAgents;
 using TestProject.Controllers;
 using TestProject.Model;
 using UnityEngine;
-using Zenject;
 
 namespace TestProject
 {
-    public class SoldierAgent : Agent, IMoveInput, IAttackInput
+    public class SoldierAgent : Agent
     {
         private const float RightDirectionChoiceReward = 0.2f;
         private const float WrongDirectionChoiceReward = -1f;
         
         public event Action<Tuple<int, int>> TileSelected;
-        public event Action<int> TargetSelected;
 
-        [Inject] private BattleData _battleData;
-
-        private int _currentSoldierId;
+        private BattleData _battleData;
         private Tuple<int, int, MoveDirection>[] _tiles;
 
-        public InputType InputType => InputType.AI;
-       
+        public int Id { get; private set; }
+
+        public void Initialize(Brain agentBrain, BattleData battleData, int soldierId)
+        {
+            _battleData = battleData;
+            brain = agentBrain;
+            Id = soldierId;
+            gameObject.name = $"Agent_{Id}";
+        }
+
+        public void RequestAction(Tuple<int, int, MoveDirection>[] tiles)
+        {
+            _tiles = tiles;
+            RequestAction();
+        }
+        
         public override void CollectObservations()
         {
             float maxDistance = Math.Max(_battleData.GridHeight, _battleData.GridWidth);
@@ -31,13 +41,13 @@ namespace TestProject
             AddVectorObs(_battleData.AttackDistance / maxDistance);
 
             //Current soldier:
-            var soldier = _battleData.Soldiers.First(item => item.Id == _currentSoldierId);
+            var soldier = _battleData.Soldiers.First(item => item.Id == Id);
             AddVectorObs(soldier.PositionX / maxDistance);
             AddVectorObs(soldier.PositionY / maxDistance);
             AddVectorObs((float) soldier.ArmyType);
 
             //Other soldiers:
-            var opponent = _battleData.Soldiers.First(item => item.Id != _currentSoldierId);
+            var opponent = _battleData.Soldiers.First(item => item.Id != Id);
             AddVectorObs((opponent.PositionX - soldier.PositionX) / maxDistance);
             AddVectorObs((opponent.PositionY - soldier.PositionY) / maxDistance);
             AddVectorObs((float) soldier.ArmyType);
@@ -69,31 +79,6 @@ namespace TestProject
                     AddReward(RightDirectionChoiceReward);
                 }
             }
-        }
-
-        public void Activate(Tuple<int, int, MoveDirection>[] tiles, int soldierId)
-        {
-            _currentSoldierId = soldierId;
-            _tiles = tiles;
-            RequestAction();
-        }
-
-        public void Activate(int[] targetIds)
-        {
-            if (targetIds.Any())
-            {
-                AddReward(1f);
-                OnTargetSelected(targetIds[0]);
-            }
-        }
-
-        public void Deactivate()
-        {
-        }
-
-        private void OnTargetSelected(int id)
-        {
-            TargetSelected?.Invoke(id);
         }
 
         private void OnTileSelected(Tuple<int, int> tile)

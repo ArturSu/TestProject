@@ -19,6 +19,7 @@ namespace TestProject.Views
         {
             X = x;
             Y = y;
+            gameObject.name = $"Tile_{x}_{y}";
             SetDefaultState();
         }
 

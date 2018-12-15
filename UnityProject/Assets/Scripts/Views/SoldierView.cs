@@ -20,6 +20,7 @@ namespace TestProject.Views
         public void Initialize(int id, ArmyType armyType, Vector3 position)
         {
             Id = id;
+            gameObject.name = $"Soldier_{armyType}_{id}";
             _color =  armyType == ArmyType.Player ? Color.blue : Color.black;
        
             transform.position = position;
