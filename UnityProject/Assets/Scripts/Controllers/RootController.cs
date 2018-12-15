@@ -46,13 +46,13 @@ namespace TestProject.Controllers
             var playerSoldier1 = new SoldierData
                 {ArmyType = ArmyType.Player, Id = 1, IsAlive = true, PositionX = 1, PositionY = 2};
             var playerSoldier2 = new SoldierData
-                {ArmyType = ArmyType.Player, Id = 3, IsAlive = true, PositionX = 1, PositionY = 4};
+                {ArmyType = ArmyType.Player, Id = 3, IsAlive = true, PositionX = 1, PositionY = 6};
             var opponentSoldier1 = new SoldierData
                 {ArmyType = ArmyType.Opponent, Id = 2, IsAlive = true, PositionX = 7, PositionY = 2};
             var opponentSoldier2 = new SoldierData
-                {ArmyType = ArmyType.Opponent, Id = 4, IsAlive = true, PositionX = 7, PositionY = 4};
+                {ArmyType = ArmyType.Opponent, Id = 4, IsAlive = true, PositionX = 7, PositionY = 6};
 
-            _battleData.Soldiers = new[] {playerSoldier1, opponentSoldier1};
+            _battleData.Soldiers = new[] {playerSoldier1, opponentSoldier1, playerSoldier2, opponentSoldier2};
             _battleData.GridWidth = 10;
             _battleData.GridHeight = 8;
             _battleData.AttackDistance = 5;

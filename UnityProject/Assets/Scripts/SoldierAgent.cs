@@ -34,7 +34,7 @@ namespace TestProject
             _tiles = tiles;
             RequestDecision();
         }
-        
+
         public override void CollectObservations()
         {
             float maxDistance = Math.Max(_battleData.GridHeight, _battleData.GridWidth);
@@ -43,17 +43,20 @@ namespace TestProject
             AddVectorObs(_battleData.AttackDistance / maxDistance);
 
             //Current soldier:
-            var soldier = _battleData.Soldiers.First(item => item.Id == Id);
-            AddVectorObs(soldier.PositionX / maxDistance);
-            AddVectorObs(soldier.PositionY / maxDistance);
-            AddVectorObs((float) soldier.ArmyType);
+            var currentSoldier = _battleData.Soldiers.First(item => item.Id == Id);
+            AddVectorObs(currentSoldier.PositionX / maxDistance);
+            AddVectorObs(currentSoldier.PositionY / maxDistance);
+            AddVectorObs((float) currentSoldier.ArmyType);
 
             //Other soldiers:
-            var opponent = _battleData.Soldiers.First(item => item.Id != Id);
-            AddVectorObs((opponent.PositionX - soldier.PositionX) / maxDistance);
-            AddVectorObs((opponent.PositionY - soldier.PositionY) / maxDistance);
-            AddVectorObs((float) soldier.ArmyType);
-            AddVectorObs(opponent.IsAlive ? 1f : 0f);
+            var otherSoldiers = _battleData.Soldiers.Where(item => item.Id != Id).ToArray();
+            foreach (var soldier in otherSoldiers)
+            {
+                AddVectorObs((soldier.PositionX - currentSoldier.PositionX) / maxDistance);
+                AddVectorObs((soldier.PositionY - currentSoldier.PositionY) / maxDistance);
+                AddVectorObs((float) soldier.ArmyType);
+                AddVectorObs(soldier.IsAlive);
+            }
         }
 
         public override void AgentAction(float[] vectorAction, string textAction)
