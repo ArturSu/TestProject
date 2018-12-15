@@ -26,7 +26,7 @@ namespace TestProject.Controllers
         protected override void OnStart()
         {
             base.OnStart();
-            
+
             _battleView.Initialize(_battleData);
 
             RunBattleCycle();
@@ -59,17 +59,22 @@ namespace TestProject.Controllers
                 Debug.LogError($"Error during battle cycle. Ex: {e}");
                 Complete(new ControllerResultBase(this));
             }
-            
         }
 
         private SoldierData GetCurrentSoldier()
         {
-            for (var i = _currentSoldierIndex; i < _battleData.Soldiers.Length; i++)
+            var firstCheck = true;
+            var startIndex = _currentSoldierIndex;
+            while (startIndex != _currentSoldierIndex || firstCheck)
             {
-                var soldier = _battleData.Soldiers[i];
+                firstCheck = false;
+                var soldier = _battleData.Soldiers[_currentSoldierIndex];
+               
+                _currentSoldierIndex++;
+                _currentSoldierIndex %= _battleData.Soldiers.Length;
+                
                 if (soldier.IsAlive)
                 {
-                    _currentSoldierIndex = (i + 1) % _battleData.Soldiers.Length;
                     return soldier;
                 }
             }
