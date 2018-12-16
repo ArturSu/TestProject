@@ -20,7 +20,7 @@ namespace Tests
 
             var mockMoveInput = new MoveInputMock(new[] {new Coordinates(1, 2), new Coordinates(2, 1)});
             var controller = new MoveController(new List<IMoveInput> {mockMoveInput}, new BattleViewStub(), battleData, null);
-            controller.Initialize(playerSoldier);
+            controller.Initialize(new Tuple<SoldierData, InputType>(playerSoldier, InputType.Player));
             controller.Start();
         }
         
@@ -34,7 +34,7 @@ namespace Tests
 
             var mockMoveInput = new MoveInputMock(new[] {new Coordinates(1, 4), new Coordinates(2, 5)});
             var controller = new MoveController(new List<IMoveInput> {mockMoveInput}, new BattleViewStub(), battleData, null);
-            controller.Initialize(playerSoldier);
+            controller.Initialize(new Tuple<SoldierData, InputType>(playerSoldier, InputType.Player));
             controller.Start();
         }
 
@@ -49,7 +49,7 @@ namespace Tests
          
             var mockMoveInput = new MoveInputMock(new[] {new Coordinates(10, 4), new Coordinates(9, 5)});
             var controller = new MoveController(new List<IMoveInput> {mockMoveInput}, new BattleViewStub(), battleData, null);
-            controller.Initialize(playerSoldier);
+            controller.Initialize(new Tuple<SoldierData, InputType>(playerSoldier, InputType.Player));
             controller.Start();
         }
         
@@ -63,7 +63,7 @@ namespace Tests
             
             var mockMoveInput = new MoveInputMock(new[] {new Coordinates(10, 2), new Coordinates(9, 1)});
             var controller = new MoveController(new List<IMoveInput> {mockMoveInput}, new BattleViewStub(), battleData, null);
-            controller.Initialize(playerSoldier);
+            controller.Initialize(new Tuple<SoldierData, InputType>(playerSoldier, InputType.Player));
             controller.Start();
         }
 
@@ -77,7 +77,7 @@ namespace Tests
             
             var mockMoveInput = new MoveInputMock(new[] {new Coordinates(5, 1), new Coordinates(4, 2), new Coordinates(6, 2), new Coordinates(5, 3)});
             var controller = new MoveController(new List<IMoveInput> {mockMoveInput}, new BattleViewStub(), battleData, null);
-            controller.Initialize(playerSoldier);
+            controller.Initialize(new Tuple<SoldierData, InputType>(playerSoldier, InputType.Player));
             controller.Start();
         }
         
@@ -93,7 +93,7 @@ namespace Tests
             
             var mockMoveInput = new MoveInputMock(new[] {new Coordinates(5, 1), new Coordinates(4, 2), new Coordinates(6, 2)});
             var controller = new MoveController(new List<IMoveInput> {mockMoveInput}, new BattleViewStub(), battleData, null);
-            controller.Initialize(playerSoldier);
+            controller.Initialize(new Tuple<SoldierData, InputType>(playerSoldier, InputType.Player));
             controller.Start();
         }
         
@@ -109,7 +109,7 @@ namespace Tests
 
             var mockMoveInput = new MoveInputMock(new[] {new Coordinates(5, 1), new Coordinates(4, 2), new Coordinates(6, 2), new Coordinates(5, 3)});
             var controller = new MoveController(new List<IMoveInput> {mockMoveInput}, new BattleViewStub(), battleData, null);
-            controller.Initialize(playerSoldier);
+            controller.Initialize(new Tuple<SoldierData, InputType>(playerSoldier, InputType.Player));
             controller.Start();
         }
 

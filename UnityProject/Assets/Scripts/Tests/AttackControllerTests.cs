@@ -21,7 +21,7 @@ namespace Tests
 
             var mockAttackInput = new AttackInputMock(new[] {2});
             var controller = new AttackController(new List<IAttackInput> {mockAttackInput}, new BattleViewStub(), battleData, null);
-            controller.Initialize(playerSoldier);
+            controller.Initialize(new Tuple<SoldierData, InputType>(playerSoldier, InputType.Player));
             controller.Start();
         }
 
@@ -37,7 +37,7 @@ namespace Tests
 
             var mockAttackInput = new AttackInputMock(new int[] { });
             var controller = new AttackController(new List<IAttackInput> {mockAttackInput}, new BattleViewStub(), battleData, null);
-            controller.Initialize(playerSoldier);
+            controller.Initialize(new Tuple<SoldierData, InputType>(playerSoldier, InputType.Player));
             controller.Start();
         }
 
@@ -53,7 +53,7 @@ namespace Tests
 
             var mockAttackInput = new AttackInputMock(new int[] { });
             var controller = new AttackController(new List<IAttackInput> {mockAttackInput}, new BattleViewStub(), battleData, null);
-            controller.Initialize(playerSoldier);
+            controller.Initialize(new Tuple<SoldierData, InputType>(playerSoldier, InputType.Player));
             controller.Start();
         }
 
@@ -69,7 +69,7 @@ namespace Tests
 
             var mockAttackInput = new AttackInputMock(new int[] { });
             var controller = new AttackController(new List<IAttackInput> {mockAttackInput}, new BattleViewStub(), battleData, null);
-            controller.Initialize(playerSoldier);
+            controller.Initialize(new Tuple<SoldierData, InputType>(playerSoldier, InputType.Player));
             controller.Start();
         }
 
@@ -85,7 +85,7 @@ namespace Tests
 
             var mockAttackInput = new AttackInputMock(new[] {2});
             var controller = new AttackController(new List<IAttackInput> {mockAttackInput}, new BattleViewStub(), battleData, null);
-            controller.Initialize(playerSoldier);
+            controller.Initialize(new Tuple<SoldierData, InputType>(playerSoldier, InputType.Player));
             controller.Start();
         }
 
@@ -106,7 +106,7 @@ namespace Tests
 
             var mockAttackInput = new AttackInputMock(new[] {2, 3});
             var controller = new AttackController(new List<IAttackInput> {mockAttackInput}, new BattleViewStub(), battleData, null);
-            controller.Initialize(playerSoldier);
+            controller.Initialize(new Tuple<SoldierData, InputType>(playerSoldier, InputType.Player));
             controller.Start();
         }
 
@@ -122,7 +122,7 @@ namespace Tests
 
             var mockAttackInput = new AttackInputMock(new int[] { });
             var controller = new AttackController(new List<IAttackInput> {mockAttackInput}, new BattleViewStub(), battleData, null);
-            controller.Initialize(playerSoldier);
+            controller.Initialize(new Tuple<SoldierData, InputType>(playerSoldier, InputType.Player));
             controller.Start();
         }
 
