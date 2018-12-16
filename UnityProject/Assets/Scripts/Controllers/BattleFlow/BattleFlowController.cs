@@ -75,19 +75,29 @@ namespace TestProject.Controllers
 
                     var moveRes = await CreateAndStart<MoveController>(arg).GetProcessedTask();
                     RemoveController(moveRes.Controller);
-                    _battleUi.AddLog("Message " + moveRes.Controller.GetType());
+                    _battleUi.AddLog(
+                        $"({soldier.ArmyType})Soldier_{soldier.Id} Moved to {soldier.PositionX} {soldier.PositionY}");
 
                     if (IsControllerAlive)
                     {
                         var attackRes = await CreateAndStart<AttackController>(arg).GetProcessedTask();
                         RemoveController(attackRes.Controller);
-                        
-                        _battleUi.AddLog("Second Message " + moveRes.Controller.GetType());
+
+                        if (attackRes.AttackedSoldierId.HasValue)
+                        {
+                            _battleUi.AddLog($"({soldier.ArmyType})Soldier_{soldier.Id} Attacked soldier {attackRes.AttackedSoldierId.Value}.");
+                        }
+                        else
+                        {
+                            _battleUi.AddLog($"({soldier.ArmyType})Soldier_{soldier.Id} has no aims for attack.");
+                        }
                     }
                 }
 
                 _winner = GetWinner();
-                _battleUi.ShowResultMessage($"Battle finished! Winner is {_winner}");
+                var finishMessage = $"Battle finished! Winner is {_winner}";
+                _battleUi.AddLog(finishMessage);
+                _battleUi.ShowResultMessage(finishMessage);
             }
             catch (TaskCanceledException)
             {
@@ -130,7 +140,7 @@ namespace TestProject.Controllers
 
             throw new Exception("Can't find alive soldier in array.");
         }
-        
+
         private ArmyType GetWinner()
         {
             var isPlayerWin = _battleData.Soldiers.Any(item => item.IsAlive && item.ArmyType == ArmyType.Player);
@@ -141,7 +151,7 @@ namespace TestProject.Controllers
         {
             return _battleData.Soldiers.Any(item => item.ArmyType == armyType && item.IsAlive);
         }
-        
+
         private void BattleUi_LeavePressed()
         {
             Complete(new ControllerResultBase(this));

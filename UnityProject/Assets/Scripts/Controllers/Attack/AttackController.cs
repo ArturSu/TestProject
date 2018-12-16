@@ -7,7 +7,7 @@ using UnityEngine.Assertions;
 
 namespace TestProject.Controllers
 {
-    public class AttackController : ControllerWithResultBase<ControllerResultBase>
+    public class AttackController : ControllerWithResultBase<AttackControllerResult>
     {
         private readonly List<IAttackInput> _attackInputs;
         private readonly BattleData _battleData;
@@ -40,7 +40,7 @@ namespace TestProject.Controllers
 
             if (availableTargets.Length == 0)
             {
-                Complete(new ControllerResultBase(this));
+                Complete(new AttackControllerResult(this));
             }
         }
 
@@ -80,7 +80,7 @@ namespace TestProject.Controllers
             _battleView.Kill(targetId);
             var soldier = _battleData.Soldiers.First(item => item.Id == targetId);
             soldier.IsAlive = false;
-            Complete(new ControllerResultBase(this));
+            Complete(new AttackControllerResult(targetId, this));
         }
         
         private void AttackInput_TargetSelected(int targetId)
