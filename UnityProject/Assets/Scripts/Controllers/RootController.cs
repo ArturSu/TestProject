@@ -28,19 +28,13 @@ namespace TestProject.Controllers
         {
             while (IsControllerAlive)
             {
-                var res = await CreateAndStart<SetupArmiesController>(!isTrainRun).GetProcessedTask();
-                RemoveController(res.Controller);
+                var setupArmiesRes = await CreateAndStart<SetupArmiesController>(!isTrainRun).GetProcessedTask();
+                RemoveController(setupArmiesRes.Controller);
                 _aiInput.Initialize(_battleData);
-                res = await CreateAndStart<BattleFlowController>(!isTrainRun).GetProcessedTask();
-                RemoveController(res.Controller);
-                _aiInput.Done(GetWinner());
+                var battleFlowRes = await CreateAndStart<BattleFlowController>(!isTrainRun).GetProcessedTask();
+                RemoveController(battleFlowRes.Controller);
+                _aiInput.Done(battleFlowRes.Winner);
             }
-        }
-
-        private ArmyType GetWinner()
-        {
-            var isPlayerWin = _battleData.Soldiers.Any(item => item.IsAlive && item.ArmyType == ArmyType.Player);
-            return isPlayerWin ? ArmyType.Player : ArmyType.Opponent;
         }
     }
 }

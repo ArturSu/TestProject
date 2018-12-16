@@ -8,7 +8,7 @@ using UnityEngine.Assertions;
 
 namespace TestProject.Controllers
 {
-    public class BattleFlowController : ControllerWithResultBase
+    public class BattleFlowController : ControllerWithResultBase<BattleFlowControllerResult>
     {
         private readonly IBattleView _battleView;
         private readonly BattleData _battleData;
@@ -103,7 +103,7 @@ namespace TestProject.Controllers
                 }
                 else
                 {
-                    Complete(new ControllerResultBase(this));
+                    Complete(new BattleFlowControllerResult(_winner, this));
                 }
             }
             catch (TaskCanceledException)
@@ -113,7 +113,7 @@ namespace TestProject.Controllers
             catch (Exception e)
             {
                 Debug.LogError($"Error during battle cycle. Ex: {e}");
-                Complete(new ControllerResultBase(this));
+                Complete(new BattleFlowControllerResult(ArmyType.Opponent, this));
             }
         }
 
@@ -161,12 +161,12 @@ namespace TestProject.Controllers
 
         private void BattleUi_LeavePressed()
         {
-            Complete(new ControllerResultBase(this));
+            Complete(new BattleFlowControllerResult(ArmyType.Opponent, this));
         }
 
         private void BattleUi_ContinuePressed()
         {
-            Complete(new ControllerResultBase(this));
+            Complete(new BattleFlowControllerResult(_winner, this));
         }
     }
 }
