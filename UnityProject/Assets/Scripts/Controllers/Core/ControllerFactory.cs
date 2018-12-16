@@ -9,8 +9,6 @@ namespace Controllers.Core
 
         public T Create<T>(object arg = null) where T : ControllerBase
         {
-            Debug.Log($"Create {typeof(T).Name}");
-
             try
             {
                 var controller = Container.Resolve<T>();
@@ -27,8 +25,6 @@ namespace Controllers.Core
 
         public T Create<T>(System.Type type, object arg = null) where T : ControllerBase
         {
-            Debug.Log($"Create {typeof(T).Name}");
-
             try
             {
                 var controller = (T)Container.Resolve(type);

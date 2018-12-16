@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Controllers.Core;
 using TestProject.Model;
 
@@ -8,7 +10,8 @@ namespace TestProject.Controllers
         private readonly BattleData _battleData;
         private IAiInput _aiInput;
 
-        public RootController(BattleData battleData, IAiInput aiInput, ControllerFactory controllerFactory) : base(controllerFactory)
+        public RootController(BattleData battleData, IAiInput aiInput, ControllerFactory controllerFactory) : base(
+            controllerFactory)
         {
             _battleData = battleData;
             _aiInput = aiInput;
@@ -18,18 +21,17 @@ namespace TestProject.Controllers
         {
             if (_aiInput.IsTrainRun)
             {
-                PlayCicle();
+                PlayCycle();
             }
             else
             {
                 FillBattleData();
                 _aiInput.Initialize(_battleData);
                 CreateAndStart<BattleFlowController>(true);
-                _aiInput.Done();
             }
         }
 
-        private async void PlayCicle()
+        private async void PlayCycle()
         {
             while (IsControllerAlive)
             {
@@ -37,25 +39,39 @@ namespace TestProject.Controllers
                 _aiInput.Initialize(_battleData);
                 var res = await CreateAndStart<BattleFlowController>(false).GetProcessedTask();
                 RemoveController(res.Controller);
-                _aiInput.Done();
+                _aiInput.Done(GetWinner());
             }
+        }
+
+        private ArmyType GetWinner()
+        {
+            var isPlayerWin = _battleData.Soldiers.Any(item => item.IsAlive && item.ArmyType == ArmyType.Player);
+            return isPlayerWin ? ArmyType.Player : ArmyType.Opponent;
         }
 
         private void FillBattleData()
         {
-            var playerSoldier1 = new SoldierData
-                {ArmyType = ArmyType.Player, Id = 1, IsAlive = true, PositionX = 1, PositionY = 2};
-            var playerSoldier2 = new SoldierData
-                {ArmyType = ArmyType.Player, Id = 3, IsAlive = true, PositionX = 1, PositionY = 6};
-            var opponentSoldier1 = new SoldierData
-                {ArmyType = ArmyType.Opponent, Id = 2, IsAlive = true, PositionX = 9, PositionY = 2};
-            var opponentSoldier2 = new SoldierData
-                {ArmyType = ArmyType.Opponent, Id = 4, IsAlive = true, PositionX = 9, PositionY = 6};
-
-            _battleData.Soldiers = new[] {playerSoldier1, opponentSoldier1, playerSoldier2, opponentSoldier2};
+            _battleData.Soldiers = CreateSoldiers(8);
             _battleData.GridWidth = 10;
             _battleData.GridHeight = 8;
             _battleData.AttackDistance = 5;
+        }
+
+        private SoldierData[] CreateSoldiers(int armySize)
+        {
+            var soldiers = new List<SoldierData>();
+            for (int i = 1; i <= armySize; i++)
+            {
+                var playerSoldier = new SoldierData
+                    {ArmyType = ArmyType.Player, Id = i, IsAlive = true, PositionX = 1, PositionY = i};
+                var opponentSoldier = new SoldierData
+                    {ArmyType = ArmyType.Opponent, Id = armySize + i, IsAlive = true, PositionX = 10, PositionY = i};
+              
+                soldiers.Add(playerSoldier);
+                soldiers.Add(opponentSoldier);
+            }
+
+            return soldiers.ToArray();
         }
     }
 }

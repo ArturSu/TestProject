@@ -130,8 +130,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   brainParameters:
-    vectorObservationSize: 16
-    numStackedVectorObservations: 1
+    vectorObservationSize: 63
+    numStackedVectorObservations: 10
     vectorActionSize: 05000000
     cameraResolutions: []
     vectorActionDescriptions:
@@ -143,7 +143,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  instanceID: 13770
+  instanceID: -1082
 --- !u!114 &114497968679796596
 MonoBehaviour:
   m_ObjectHideFlags: 1

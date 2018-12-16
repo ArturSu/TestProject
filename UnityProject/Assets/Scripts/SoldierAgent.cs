@@ -16,19 +16,19 @@ namespace TestProject
 
         private Tuple<int, int, MoveDirection>[] _tiles;
         private float _maxDistance;
-        private SoldierData _soldier;
+        private SoldierData _currentSoldier;
         private SoldierData[] _sameArmySoldiers;
         private SoldierData[] _otherArmySoldiers;
         private float _attackDistance;
 
-        public int Id => _soldier.Id;
+        public int Id => _currentSoldier.Id;
 
         public void Initialize(Brain agentBrain, BattleData battleData, int soldierId)
         {
             brain = agentBrain;
-            _soldier = battleData.Soldiers.First(item => item.Id == soldierId);
-            _sameArmySoldiers = battleData.Soldiers.Where(item => item.Id != Id && item.ArmyType == _soldier.ArmyType).ToArray();
-            _otherArmySoldiers = battleData.Soldiers.Where(item => item.ArmyType != _soldier.ArmyType).ToArray();
+            _currentSoldier = battleData.Soldiers.First(item => item.Id == soldierId);
+            _sameArmySoldiers = battleData.Soldiers.Where(item => item.Id != Id && item.ArmyType == _currentSoldier.ArmyType).ToArray();
+            _otherArmySoldiers = battleData.Soldiers.Where(item => item.ArmyType != _currentSoldier.ArmyType).ToArray();
             _maxDistance = Math.Max(battleData.GridHeight, battleData.GridWidth);
             _attackDistance = battleData.AttackDistance / _maxDistance;
             gameObject.name = $"Agent_{Id}";
@@ -36,6 +36,13 @@ namespace TestProject
             //Do it for correct brain init.
             gameObject.SetActive(false);
             gameObject.SetActive(true);
+        }
+
+        public void Done(ArmyType winner)
+        {
+            var reward = _currentSoldier.ArmyType == winner ? 1f : -1f;
+            AddReward(reward);
+            Done();
         }
 
         public void RequestAction(Tuple<int, int, MoveDirection>[] tiles)
@@ -46,15 +53,13 @@ namespace TestProject
 
         public override void CollectObservations()
         {
-
             //General:
             AddVectorObs(_attackDistance);
 
             //Current soldier:
          
-            AddVectorObs(_soldier.PositionX / _maxDistance);
-            AddVectorObs(_soldier.PositionY / _maxDistance);
-            AddVectorObs((float) _soldier.ArmyType);
+            AddVectorObs(_currentSoldier.PositionX / _maxDistance);
+            AddVectorObs(_currentSoldier.PositionY / _maxDistance);
 
             //Other soldiers:
             CollectSoldiersData(_sameArmySoldiers);
@@ -92,13 +97,13 @@ namespace TestProject
             }
         }
 
-        private void CollectSoldiersData(SoldierData[] otherSoldiers)
+        private void CollectSoldiersData(SoldierData[] soldiers)
         {
-            foreach (var soldier in otherSoldiers)
+            foreach (var soldier in soldiers)
             {
-                AddVectorObs((soldier.PositionX - _soldier.PositionX) / _maxDistance);
-                AddVectorObs((soldier.PositionY - _soldier.PositionY) / _maxDistance);
-                AddVectorObs((float) soldier.ArmyType);
+                AddVectorObs((soldier.PositionX - _currentSoldier.PositionX) / _maxDistance);
+                AddVectorObs((soldier.PositionY - _currentSoldier.PositionY) / _maxDistance);
+                AddVectorObs(soldier.ArmyType == _currentSoldier.ArmyType);
                 AddVectorObs(soldier.IsAlive);
             }
         }

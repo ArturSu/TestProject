@@ -36,7 +36,6 @@ namespace Controllers.Core
                 case ControllerState.Created:
                     throw new InvalidOperationException("Controller can not be stopped from current state");
                 case ControllerState.Running:
-                    Debug.Log($"Stopping '{ControllerName}'");
 
                     _stopToken.Cancel();
 
@@ -58,7 +57,6 @@ namespace Controllers.Core
 
         public void AddController(ControllerBase controller)
         {
-            Debug.Log($"Add child controller {controller.GetType().Name} to {ControllerName}");
             _childControllers.Add(controller);
 
             if (State == ControllerState.Running)
@@ -69,7 +67,6 @@ namespace Controllers.Core
 
         public void RemoveController(ControllerBase controller)
         {
-            Debug.Log($"Remove child controller {controller.GetType().Name} from {ControllerName}");
             controller.Stop();
             _childControllers.Remove(controller);
         }
@@ -98,7 +95,6 @@ namespace Controllers.Core
             {
                 _stopToken = new CancellationTokenSource();
 
-                Debug.Log($"Starting '{ControllerName}'");
 
                 State = ControllerState.Starting;
 

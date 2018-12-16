@@ -5,7 +5,6 @@ using MLAgents;
 using TestProject.Controllers;
 using TestProject.Model;
 using UnityEngine;
-using Zenject;
 
 namespace TestProject.Views
 {
@@ -30,11 +29,11 @@ namespace TestProject.Views
             _battleData = battleData;
         }
 
-        public void Done()
+        public void Done(ArmyType winner)
         {
             foreach (var agent in _agents)
             {
-                agent.Done();
+                agent.Done(winner);
             }
         }
 
@@ -49,7 +48,14 @@ namespace TestProject.Views
             if (targetIds.Any())
             {
                 _currentAgent.AddReward(1f);
-                OnTargetSelected(targetIds[0]);
+                var chosenId = targetIds[0];
+                var agent = _agents.FirstOrDefault(item => item.Id == chosenId);
+                if (agent != null)
+                {
+                    agent.AddReward(-1);
+                }
+                
+                OnTargetSelected(chosenId);
             }
         }
 

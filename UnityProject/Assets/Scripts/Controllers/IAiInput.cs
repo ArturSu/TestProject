@@ -7,6 +7,6 @@ namespace TestProject.Controllers
         bool IsTrainRun { get; }
         void Initialize(BattleData battleData);
 
-        void Done();
+        void Done(ArmyType winner);
     }
 }
