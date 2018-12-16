@@ -11,6 +11,7 @@ namespace TestProject
     {
         private const float RightDirectionChoiceReward = 0.2f;
         private const float WrongDirectionChoiceReward = -1f;
+        private const int MaxSoldiersCount = 8;
         
         public event Action<Tuple<int, int>> TileSelected;
 
@@ -63,7 +64,9 @@ namespace TestProject
 
             //Other soldiers:
             CollectSoldiersData(_sameArmySoldiers);
+            CollectFakeSoldiersData(MaxSoldiersCount - _sameArmySoldiers.Length - 1, true);
             CollectSoldiersData(_otherArmySoldiers);
+            CollectFakeSoldiersData(MaxSoldiersCount - _otherArmySoldiers.Length, false);
         }     
 
         public override void AgentAction(float[] vectorAction, string textAction)
@@ -105,6 +108,17 @@ namespace TestProject
                 AddVectorObs((soldier.PositionY - _currentSoldier.PositionY) / _maxDistance);
                 AddVectorObs(soldier.ArmyType == _currentSoldier.ArmyType);
                 AddVectorObs(soldier.IsAlive);
+            }
+        }
+
+        private void CollectFakeSoldiersData(int soldiersCount, bool isSameArmy)
+        {
+            for (var i = 0; i < soldiersCount; i++)
+            {
+                AddVectorObs(0);
+                AddVectorObs(0);
+                AddVectorObs(isSameArmy);
+                AddVectorObs(false);
             }
         }
         

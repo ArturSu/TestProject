@@ -40,6 +40,11 @@ namespace TestProject.Controllers
             RunBattleCycle();
         }
 
+        protected override void OnStop()
+        {
+            _battleView.Hide();
+        }
+
         private async void RunBattleCycle()
         {
             try
