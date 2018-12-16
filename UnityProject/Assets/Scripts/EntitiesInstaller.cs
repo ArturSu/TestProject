@@ -6,7 +6,7 @@ using Zenject;
 
 namespace TestProject
 {
-    public class ControllersInstaller : MonoInstaller
+    public class EntitiesInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {
