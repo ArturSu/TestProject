@@ -40,7 +40,7 @@ namespace TestProject.Controllers
             base.OnStart();
 
             _battleView.Initialize(_battleData);
-            _battleUi.Activate();
+            _battleUi.Activate(_isPvE);
 
             RunBattleCycle();
         }
@@ -97,7 +97,14 @@ namespace TestProject.Controllers
                 _winner = GetWinner();
                 var finishMessage = $"Battle finished! Winner is {_winner}";
                 _battleUi.AddLog(finishMessage);
-                _battleUi.ShowResultMessage(finishMessage);
+                if (_isPvE)
+                {
+                    _battleUi.ShowResultMessage(finishMessage);
+                }
+                else
+                {
+                    Complete(new ControllerResultBase(this));
+                }
             }
             catch (TaskCanceledException)
             {

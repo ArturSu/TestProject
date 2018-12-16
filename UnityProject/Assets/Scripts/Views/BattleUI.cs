@@ -15,11 +15,14 @@ namespace TestProject.Views
         [SerializeField] private Button _leaveBattleButton;
         [SerializeField] private Button _continueButton;
         
-        public void Activate()
+        private bool _showLog;
+
+        public void Activate(bool showLog)
         {
             gameObject.SetActive(true);
             _resultMessage.gameObject.SetActive(false);
             _log.text = String.Empty;
+            _showLog = showLog;
         }
 
         public void Deactivate()
@@ -29,7 +32,10 @@ namespace TestProject.Views
 
         public void AddLog(string message)
         {
-            _log.text = message + "\n" + _log.text;
+            if (_showLog)
+            {
+                _log.text = message + "\n" + _log.text;
+            }
         }
 
         public void ShowResultMessage(string message)
