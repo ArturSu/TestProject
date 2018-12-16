@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Controllers.Core;
 using TestProject.Model;
+using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace TestProject.Controllers.SetupArmies
@@ -22,7 +23,7 @@ namespace TestProject.Controllers.SetupArmies
         protected override void SetArg(object arg)
         {
             Assert.IsTrue(arg is bool);
-            _isPvE = (bool)arg;
+            _isPvE = (bool) arg;
         }
 
         protected override void OnStart()
@@ -53,16 +54,17 @@ namespace TestProject.Controllers.SetupArmies
         {
             _armySetupView.SetupCompleted -= ArmySetupView_SetupCompleted;
         }
-        
+
         private void FillBattleData(int playerSoldiersCount, int opponentSoldiersCount)
         {
-            _battleData.Soldiers = CreateSoldiers(playerSoldiersCount, opponentSoldiersCount);
             _battleData.GridWidth = 10;
             _battleData.GridHeight = 8;
             _battleData.AttackDistance = 5;
+            _battleData.Soldiers = CreateSoldiers(playerSoldiersCount, opponentSoldiersCount);
+
             Complete(new ControllerResultBase(this));
         }
-        
+
         private SoldierData[] CreateSoldiers(int playerSoldiersCount, int opponentSoldiersCount)
         {
             var maxArmySize = Math.Max(playerSoldiersCount, opponentSoldiersCount);
@@ -71,10 +73,12 @@ namespace TestProject.Controllers.SetupArmies
             var soldiers = new List<SoldierData>();
             for (int i = 1; i <= maxArmySize; i++)
             {
+                var yPosition = GetYPosition(i);
                 if (createdPlayerSoldiers < playerSoldiersCount)
                 {
                     var playerSoldier = new SoldierData
-                        {ArmyType = ArmyType.Player, Id = i, IsAlive = true, PositionX = 1, PositionY = i};
+                        {ArmyType = ArmyType.Player, Id = i, IsAlive = true, PositionX = 1, PositionY = yPosition};
+                    
                     soldiers.Add(playerSoldier);
                     createdPlayerSoldiers++;
                 }
@@ -83,9 +87,11 @@ namespace TestProject.Controllers.SetupArmies
                 {
                     var opponentSoldier = new SoldierData
                     {
-                        ArmyType = ArmyType.Opponent, Id = playerSoldiersCount + i, IsAlive = true, PositionX = 10,
-                        PositionY = i
+                        ArmyType = ArmyType.Opponent, Id = playerSoldiersCount + i, IsAlive = true,
+                        PositionX = _battleData.GridWidth,
+                        PositionY = yPosition
                     };
+                    
                     soldiers.Add(opponentSoldier);
                     createdOpponentSoldiers++;
                 }
@@ -93,7 +99,13 @@ namespace TestProject.Controllers.SetupArmies
 
             return soldiers.ToArray();
         }
-        
+
+        private int GetYPosition(int index)
+        {
+            var displacement = (int) Math.Pow(-1, index) * Mathf.CeilToInt(index * 0.5f - 0.5f);
+            return _battleData.GridHeight / 2 - displacement;
+        }
+
         private void ArmySetupView_SetupCompleted(int playerSoldiersCount, int opponentSoldiersCount)
         {
             FillBattleData(playerSoldiersCount, opponentSoldiersCount);
