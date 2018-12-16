@@ -25,6 +25,14 @@ namespace TestProject.Views
         {
             CreateGrid(battleData.GridWidth, battleData.GridHeight);
             CreateSoldiers(battleData.Soldiers);
+            gameObject.SetActive(true);
+        }
+
+        public void Hide()
+        {
+            gameObject.SetActive(false);
+            ClearGrid();
+            ClearSoldiers();
         }
 
         public void Move(int id, int positionX, int positionY)
@@ -78,8 +86,6 @@ namespace TestProject.Views
         
         private void CreateGrid(int height, int width)
         {
-            ClearGrid();
-
             for (int i = 0; i < height; i++)
             {
                 for (var j = 0; j < width; j++)
@@ -95,8 +101,6 @@ namespace TestProject.Views
 
         private void CreateSoldiers(SoldierData[] soldiers)
         {
-            ClearSoldiers();
-
             foreach (var soldier in soldiers)
             {
                 var position = GetWorldPosition(soldier.PositionX, soldier.PositionY);

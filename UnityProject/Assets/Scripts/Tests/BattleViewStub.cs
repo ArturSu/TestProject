@@ -9,6 +9,10 @@ namespace Tests
         {
         }
 
+        public void Hide()
+        {
+        }
+
         public void Move(int id, int positionX, int positionY)
         {
         }

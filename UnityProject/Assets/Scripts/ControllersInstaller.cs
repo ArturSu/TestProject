@@ -1,5 +1,6 @@
 using Controllers.Core;
 using TestProject.Controllers;
+using TestProject.Controllers.SetupArmies;
 using TestProject.Model;
 using Zenject;
 
@@ -11,6 +12,7 @@ namespace TestProject
         {
             Container.Bind<RootController>().AsTransient();
             Container.Bind<BattleFlowController>().AsTransient();
+            Container.Bind<SetupArmiesController>().AsTransient();
             Container.Bind<AttackController>().AsTransient();
             Container.Bind<MoveController>().AsTransient();
             Container.Bind<ControllerFactory>().AsSingle();
