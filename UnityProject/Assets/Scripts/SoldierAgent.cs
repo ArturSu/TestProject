@@ -9,7 +9,7 @@ namespace TestProject
 {
     public class SoldierAgent : Agent
     {
-        private const float RightDirectionChoiceReward = 0.2f;
+        private const float RightDirectionChoiceReward = 0.05f;
         private const float WrongDirectionChoiceReward = -1f;
         private const int MaxSoldiersCount = 8;
         

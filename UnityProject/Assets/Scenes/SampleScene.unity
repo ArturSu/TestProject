@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Name: (Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
   m_EditorClassIdentifier: 
   broadcast: 1
-  graphModel: {fileID: 4900000, guid: de0f35a806318e34c800310ebea4e67f, type: 3}
+  graphModel: {fileID: 4900000, guid: 33720a09a50a6f84dadc6ea400266c9d, type: 3}
   graphScope: 
   graphPlaceholders: []
   BatchSizePlaceholderName: batch_size
@@ -473,7 +473,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.45882353, g: 0.6509804, b: 0.7647059, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -803,6 +803,16 @@ Prefab:
       propertyPath: CoreBrains.Array.data[3]
       value: 
       objectReference: {fileID: 35882892}
+    - target: {fileID: 114181575774036972, guid: a1cd57c7339a5c44c8eb3b30f9d1cb72,
+        type: 2}
+      propertyPath: brainType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114181575774036972, guid: a1cd57c7339a5c44c8eb3b30f9d1cb72,
+        type: 2}
+      propertyPath: brainParameters.numStackedVectorObservations
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1cd57c7339a5c44c8eb3b30f9d1cb72, type: 2}
   m_IsPrefabAsset: 0

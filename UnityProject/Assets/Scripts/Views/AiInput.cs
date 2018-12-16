@@ -27,8 +27,9 @@ namespace TestProject.Views
         public void Initialize(BattleData battleData)
         {
             _battleData = battleData;
+            InitializeAgents();
         }
-
+        
         public void Done(ArmyType winner)
         {
             foreach (var agent in _agents)
@@ -47,12 +48,12 @@ namespace TestProject.Views
         {
             if (targetIds.Any())
             {
-                _currentAgent.AddReward(1f);
+                _currentAgent.AddReward(0.5f);
                 var chosenId = targetIds[0];
                 var agent = _agents.FirstOrDefault(item => item.Id == chosenId);
                 if (agent != null)
                 {
-                    agent.AddReward(-1);
+                    agent.AddReward(-0.5f);
                 }
                 
                 OnTargetSelected(chosenId);
@@ -61,6 +62,17 @@ namespace TestProject.Views
 
         public void Deactivate()
         {
+        }
+        
+        private void InitializeAgents()
+        {
+            foreach (var agent in _agents)
+            {
+                if (_battleData.Soldiers.Any(item => item.Id == agent.Id))
+                {
+                    agent.Initialize(_brain, _battleData, agent.Id);
+                }
+            }
         }
 
         private SoldierAgent GetAgent(int soldierId)
