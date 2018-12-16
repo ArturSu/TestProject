@@ -1,10 +1,12 @@
 # Turn-based strategy
 
+![](https://i.imgur.com/SAKE0vE.png)
+
 ## Description
 Controlled by player units(blue color) start game on the nearest part of the board.
 Controlled by AI units(black color) start game on the farest.
-Unit which make step is highlited by yellow color. Firstly it moves on one tile in four directions. 
-Available directions are glowed by green color. Then unit attacks opponent unit if they are on the same vertical or horizontal line and distance is lower than 5 tiles. Each unit has one life.
+Unit which make step has yellow color. Firstly it moves to one tile in four directions. 
+Available directions are highlighted by green color. Click on prefered one. Then unit attacks opponent units if they are on the same vertical or horizontal line and distance is lower than 5 tiles. Units which can be attacked are highlighted by red color. Click on prefered one. Each unit has one life.
 
 Enjoy!)
 
