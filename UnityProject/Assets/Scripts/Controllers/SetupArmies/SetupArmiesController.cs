@@ -78,7 +78,7 @@ namespace TestProject.Controllers.SetupArmies
                 {
                     var playerSoldier = new SoldierData
                         {ArmyType = ArmyType.Player, Id = i, IsAlive = true, PositionX = 1, PositionY = yPosition};
-                    
+
                     soldiers.Add(playerSoldier);
                     createdPlayerSoldiers++;
                 }
@@ -91,7 +91,7 @@ namespace TestProject.Controllers.SetupArmies
                         PositionX = _battleData.GridWidth,
                         PositionY = yPosition
                     };
-                    
+
                     soldiers.Add(opponentSoldier);
                     createdOpponentSoldiers++;
                 }
@@ -102,7 +102,7 @@ namespace TestProject.Controllers.SetupArmies
 
         private int GetYPosition(int index)
         {
-            var displacement = (int) Math.Pow(-1, index) * Mathf.CeilToInt(index * 0.5f - 0.5f);
+            var displacement = (int) Math.Pow(-1, index - 1) * Mathf.CeilToInt(index * 0.5f - 0.5f);
             return _battleData.GridHeight / 2 - displacement;
         }
 
