@@ -4,6 +4,7 @@ using Controllers.Core;
 using TestProject.Model;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Random = UnityEngine.Random;
 
 namespace TestProject.Controllers.SetupArmies
 {
@@ -36,7 +37,7 @@ namespace TestProject.Controllers.SetupArmies
             }
             else
             {
-                FillBattleData(8, 8);
+                FillBattleData(Random.Range(1, 9), Random.Range(1, 9));
             }
         }
 
