@@ -11,8 +11,10 @@ namespace TestProject
     {
         private const float RightDirectionChoiceReward = 0.05f;
         private const float WrongDirectionChoiceReward = -1f;
-        private const int MaxSoldiersCount = 8;
+        private const float StepPenalty = -0.1f;
         
+        private const int MaxSoldiersCount = 8;
+
         public event Action<Tuple<int, int>> TileSelected;
 
         private Tuple<int, int, MoveDirection>[] _tiles;
@@ -28,12 +30,13 @@ namespace TestProject
         {
             brain = agentBrain;
             _currentSoldier = battleData.Soldiers.First(item => item.Id == soldierId);
-            _sameArmySoldiers = battleData.Soldiers.Where(item => item.Id != Id && item.ArmyType == _currentSoldier.ArmyType).ToArray();
+            _sameArmySoldiers = battleData.Soldiers
+                .Where(item => item.Id != Id && item.ArmyType == _currentSoldier.ArmyType).ToArray();
             _otherArmySoldiers = battleData.Soldiers.Where(item => item.ArmyType != _currentSoldier.ArmyType).ToArray();
             _maxDistance = Math.Max(battleData.GridHeight, battleData.GridWidth);
             _attackDistance = battleData.AttackDistance / _maxDistance;
             gameObject.name = $"Agent_{Id}";
-           
+
             //Do it for correct brain init.
             gameObject.SetActive(false);
             gameObject.SetActive(true);
@@ -58,7 +61,7 @@ namespace TestProject
             AddVectorObs(_attackDistance);
 
             //Current soldier:
-         
+
             AddVectorObs(_currentSoldier.PositionX / _maxDistance);
             AddVectorObs(_currentSoldier.PositionY / _maxDistance);
 
@@ -67,14 +70,15 @@ namespace TestProject
             CollectFakeSoldiersData(MaxSoldiersCount - _sameArmySoldiers.Length - 1, true);
             CollectSoldiersData(_otherArmySoldiers);
             CollectFakeSoldiersData(MaxSoldiersCount - _otherArmySoldiers.Length, false);
-        }     
+        }
 
         public override void AgentAction(float[] vectorAction, string textAction)
         {
+            AddReward(StepPenalty);
             int action = Mathf.FloorToInt(vectorAction[0]) - 1;
             if (action >= 0)
             {
-                var chosenDirection = (MoveDirection)action;
+                var chosenDirection = (MoveDirection) action;
                 var tile = _tiles.FirstOrDefault(item => item.Item3 == chosenDirection);
                 if (tile != null)
                 {
@@ -121,7 +125,7 @@ namespace TestProject
                 AddVectorObs(false);
             }
         }
-        
+
         private void OnTileSelected(Tuple<int, int> tile)
         {
             TileSelected?.Invoke(tile);
