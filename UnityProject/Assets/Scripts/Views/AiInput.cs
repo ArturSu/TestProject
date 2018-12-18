@@ -48,12 +48,12 @@ namespace TestProject.Views
         {
             if (targetIds.Any())
             {
-                _currentAgent.AddReward(0.5f);
+                _currentAgent.AddReward(0.8f);
                 var chosenId = targetIds[0];
                 var agent = _agents.FirstOrDefault(item => item.Id == chosenId);
                 if (agent != null)
                 {
-                    agent.AddReward(-1f);
+                    agent.AddReward(-0.6f);
                 }
                 
                 OnTargetSelected(chosenId);

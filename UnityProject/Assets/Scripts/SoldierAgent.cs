@@ -11,8 +11,8 @@ namespace TestProject
     {
         private const float RightDirectionChoiceReward = 0.05f;
         private const float WrongDirectionChoiceReward = -1f;
-        private const float StepPenalty = -0.1f;
-        
+        private const float StepPenalty = -0.06f;
+        private const float StepUnderAttackPenalty = -0.5f;
         private const int MaxSoldiersCount = 8;
 
         public event Action<Tuple<int, int>> TileSelected;
@@ -22,7 +22,7 @@ namespace TestProject
         private SoldierData _currentSoldier;
         private SoldierData[] _sameArmySoldiers;
         private SoldierData[] _otherArmySoldiers;
-        private float _attackDistance;
+        private int _attackDistance;
 
         public int Id => _currentSoldier.Id;
 
@@ -34,7 +34,7 @@ namespace TestProject
                 .Where(item => item.Id != Id && item.ArmyType == _currentSoldier.ArmyType).ToArray();
             _otherArmySoldiers = battleData.Soldiers.Where(item => item.ArmyType != _currentSoldier.ArmyType).ToArray();
             _maxDistance = Math.Max(battleData.GridHeight, battleData.GridWidth);
-            _attackDistance = battleData.AttackDistance / _maxDistance;
+            _attackDistance = battleData.AttackDistance;
             gameObject.name = $"Agent_{Id}";
 
             //Do it for correct brain init.
@@ -57,9 +57,6 @@ namespace TestProject
 
         public override void CollectObservations()
         {
-            //General:
-            AddVectorObs(_attackDistance);
-
             //Current soldier:
 
             AddVectorObs(_currentSoldier.PositionX / _maxDistance);
@@ -82,8 +79,9 @@ namespace TestProject
                 var tile = _tiles.FirstOrDefault(item => item.Item3 == chosenDirection);
                 if (tile != null)
                 {
-                    AddReward(RightDirectionChoiceReward);
-                    OnTileSelected(new Tuple<int, int>(tile.Item1, tile.Item2));
+                    var tilePos = new Tuple<int, int>(tile.Item1, tile.Item2);
+                    RewardMovement(tilePos);
+                    OnTileSelected(tilePos);
                 }
                 else
                 {
@@ -129,6 +127,33 @@ namespace TestProject
         private void OnTileSelected(Tuple<int, int> tile)
         {
             TileSelected?.Invoke(tile);
+        }
+
+        private void RewardMovement(Tuple<int, int> tile)
+        {
+            AddReward(RightDirectionChoiceReward);
+
+            foreach (var soldier in _otherArmySoldiers)
+            {
+                if (soldier.IsAlive)
+                {
+                    var xDistance = Math.Abs(soldier.PositionX - tile.Item1);
+                    var yDistance = Math.Abs(soldier.PositionY - tile.Item2);
+                    
+                    //Vertical 
+                    if (xDistance * yDistance == 0 && xDistance + yDistance == _attackDistance)
+                    {
+                        AddReward(StepUnderAttackPenalty);
+                    }
+
+                    //Knight
+                    if (xDistance < _attackDistance && yDistance == 1 ||
+                        yDistance < _attackDistance && xDistance == 1)
+                    {
+                        AddReward(StepUnderAttackPenalty);
+                    }
+                }
+            }
         }
     }
 }
